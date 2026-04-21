@@ -1,0 +1,44 @@
+---
+title: "Assignment 1"
+author: Shey Dorji, Emma Rasmussen
+format: pdf
+theme: lux
+editor: visual
+---
+
+```{r, message=FALSE, warning = FALSE}
+library(here)
+library(ggplot2)
+library(tidyverse)
+library(sjPlot)
+library(performance)
+
+df <- read.csv("p301.csv")
+```
+
+```{r analysis-1}
+help("ggplot2") #check ggplot2 syntax
+
+#scatter plot of transp. over time
+p1 <- ggplot(df, aes(x=yd, y=transpiration, color = direct_solar)) +
+  geom_point() + 
+  scale_color_gradient(low="maroon", high="gold") + theme_minimal() + 
+  labs(y = "transpiration", x= "day of the year", 
+  title = "transpiration as a function of day of the year and \n direct solar exposure")
+
+p1
+
+
+```
+
+**Analysis 1**: *We chose to plot transpiration vs day of the year and direct solar radiation to see if our data matched the expected distribution of the highest levels of transpiration occurring on the hottest days of the year. The plot mostly matches our expectation, but there are some interesting gaps around the 200th day of the year that could warrant further investigation.*
+
+```{r analysis-2}
+#scatterplot of precip vs NPP
+ggplot(df , aes(x = precip, y= NPP, color = precip)) + 
+  geom_point()+ theme_minimal() + 
+  labs(y= "npp", x = "precipitation", 
+       title = "precipitation vs net primary productivity")
+```
+
+**Analysis 2**:*For the second analysis we chose to plot precipitation vs net primary productivity to visualize the relationship between the two variables. We see that low precipitation values lead to both low and high NPP, while higher precipitation levels cause NPP to be clustered around zero. Futher investigation is warranted to understand why precipitation could lead to both low and high net primary productivity.*
