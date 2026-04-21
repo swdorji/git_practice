@@ -1,0 +1,25 @@
+---
+title: "streamflow branch"
+format: html
+editor: visual
+---
+
+```{r}
+library(here)
+library(tidyverse)
+
+df <- read.csv(here("p301.csv"))
+
+df_wy<- df |> group_by(wy) |> 
+  summarise(total_streamflow = sum(streamflow), total_precip = sum(precip), percent_streamflow = (total_streamflow/total_precip)*100)
+
+ mean(df_wy$percent_streamflow)
+
+ range(df_wy$percent_streamflow)
+ 
+ sd(df_wy$percent_streamflow)
+
+
+
+```
+
