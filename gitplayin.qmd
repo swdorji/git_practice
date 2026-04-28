@@ -9,3 +9,5 @@ editor: visual
 first test 123
 
 first test 456
+
+conflict test github github
