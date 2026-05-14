@@ -1,0 +1,28 @@
+---
+title: "assignment4.qmd"
+format: html
+editor: visual
+---
+
+```{r}
+#| message: False
+
+source("simp_diversity.R")
+library(dplyr)
+library(palmerpenguins)
+
+penguins<-data(palmerspenguins)
+data("penguins")
+
+```
+
+## test the function on ze penguins
+
+```{r}
+species_count <- penguins |> count(species)
+
+simp_diversity(species_count$n)
+
+
+
+```
