@@ -1,0 +1,104 @@
+---
+title: "assignment3_forloops"
+format: html
+---
+
+## Part 1
+
+```{r}
+#| message: false
+library(tidyverse)
+library(ggplot2)
+
+day = c(seq(1:365))
+pm25 = c(rnorm(n=365 , mean = 24, sd = 8 ))
+season = c("winter", "spring", "summer", "fall") 
+season <- as.factor(season)
+
+
+df<- data.frame(day,pm25)
+
+df <- df |> 
+  mutate(season = case_when(
+    row_number() <= 90 ~ "winter", row_number() <= 180 ~ "spring", 
+    row_number() <= 270 ~ "summer", row_number() <= 365 ~ "fall"
+  ))
+
+df <- df |> mutate(risk = NA)
+
+```
+
+## Part 2
+
+```{r}
+max_unhealthy_streak <- 0
+current_streak <- 0
+
+for (i in 1:nrow(df)) {
+  for (k in 1:nrow(df))
+  
+  if (df$pm25[i] < 12) {
+    df$risk[i] <- "good"
+  } else if (df$pm25[i] > 35.4) {
+    df$risk[i] <- "unhealthy"
+  } else {
+    df$risk[i] <- "moderate"
+  }
+  #part 2 of loop - compute longest unhealthy streak
+  
+  if (df$risk[i] == "unhealthy") {
+    current_streak <- current_streak + 1
+    
+    if (current_streak > max_unhealthy_streak) {
+      max_unhealthy_streak <- current_streak
+    }
+    
+  } else {
+    current_streak <- 0 
+  }
+}
+
+print(max_unhealthy_streak) 
+
+```
+
+## Part 3
+
+```{r}
+
+winter_unhealthy <- 0
+spring_unhealthy <- 0 
+summer_unhealthy <- 0 
+fall_unhealthy <- 0
+for (i in 1:nrow(df)){
+  if (df$season[i] == "winter" & df$risk[i] == "unhealthy") {
+  winter_unhealthy <- winter_unhealthy + 1
+  }
+  if(df$season[i] == "spring" & df$risk[i] == "unealthy") {
+    spring_unhealthy <- spring_unhealthy + 1
+  }
+  if(df$season[i] == "summer" & df$risk[i] == "unhealthy") {
+    summer_unhealthy <- summer_unhealthy +1
+  }
+ if(df$season[i] == "fall" & df$risk[i] == "unhealthy") {
+    fall_unhealthy <- fall_unhealthy +1
+ }
+}
+
+```
+
+## Part 4
+
+```{r}
+#time series histogram
+pm25_yrly <- df |> ggplot(aes(x = day, y = pm25, fill = season)) + geom_bar(stat="identity") +
+  theme_minimal() + labs(title = "Pm2.5 levels over 365 days" , subtitle = sprintf("max number of unhealthy days in a row : %d, ",max_unhealthy_streak), y = "pm 2.5", x = "days")
+
+pm25_yrly
+
+riskydays <- df |> ggplot(aes(x=risk, fill = risk)) + geom_bar(stat = "count") + 
+  theme_minimal() + 
+  labs(title = "Number of days in a year at various pm 2.5 risk levels" , subtitle = sprintf("max number of unhealthy days in a row : %d, ",max_unhealthy_streak), y = "days", x = "risk level")
+riskydays
+
+```
