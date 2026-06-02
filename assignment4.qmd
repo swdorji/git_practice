@@ -7,6 +7,11 @@ editor: visual
 ```{r}
 #| message: False
 
+#import simp_diversity custom function
+#  Function: simp_diversity: computes the Simpson diversity for a given population
+#            Inputs: n: the number of individuals in a species and N: the total number of individuals in all species
+#            Outputs: D: the Simpson diversity index for a population, denoting richness and evenness 
+
 source("simp_diversity.R")
 library(dplyr)
 library(palmerpenguins)
